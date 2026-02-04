@@ -13,7 +13,7 @@ module Api
         end
 
         client = Asana::Client.new do |c|
-          c.authentication :oauth2, current_user.asana_access_token
+          c.authentication :oauth2, bearer_token: current_user.asana_access_token
         end
 
         workspaces = client.workspaces.find_all
@@ -26,7 +26,7 @@ module Api
 
         @workspaces = current_user.asana_workspaces.reload
         render json: @workspaces.map { |ws| workspace_json(ws) }
-      rescue Asana::Errors::AsanaError => e
+      rescue StandardError => e
         render json: { error: e.message }, status: :bad_request
       end
 
@@ -38,7 +38,7 @@ module Api
         end
 
         client = Asana::Client.new do |c|
-          c.authentication :oauth2, current_user.asana_access_token
+          c.authentication :oauth2, bearer_token: current_user.asana_access_token
         end
 
         projects = client.projects.find_by_workspace(workspace: @workspace.workspace_gid)
@@ -50,7 +50,7 @@ module Api
         end
 
         render json: workspace_json(@workspace.reload)
-      rescue Asana::Errors::AsanaError => e
+      rescue StandardError => e
         render json: { error: e.message }, status: :bad_request
       end
 

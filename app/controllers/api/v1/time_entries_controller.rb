@@ -64,6 +64,16 @@ module Api
         head :no_content
       end
 
+      def sync_to_asana
+        @time_entry = current_user.time_entries.find(params[:id])
+        
+        AsanaService.post_time_entry_to_task(@time_entry)
+        
+        render json: time_entry_json(@time_entry.reload)
+      rescue StandardError => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+
       private
 
       def set_time_entry

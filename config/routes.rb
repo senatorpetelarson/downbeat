@@ -20,11 +20,12 @@ Rails.application.routes.draw do
       end
       
       resources :time_entries do
-        collection do
-          get :active
-        end
         member do
           post :forgot_stop
+          post :sync_to_asana
+        end
+        collection do
+          get :active
         end
       end
       
@@ -34,18 +35,19 @@ Rails.application.routes.draw do
         end
       end
       
-      resources :asana_projects, only: [:index] do
+      resources :asana_projects, only: [:index, :update] do
         member do
           patch :map_to_client
         end
-        resources :asana_tasks, only: [:index]
       end
+      resources :asana_tasks, only: [:index]
       
       get 'reports/monthly', to: 'reports#monthly'
     end
   end
   
-  # Asana OAuth callback
+  # Asana OAuth (outside the api/v1 namespace)
+  get 'auth/asana', to: 'asana_auth#authorize'
   get 'auth/asana/callback', to: 'asana_auth#callback'
 
   # Sidekiq web UI (optional, for monitoring jobs)

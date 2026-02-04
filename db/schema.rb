@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_04_221918) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_04_232004) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,16 +45,33 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_04_221918) do
   create_table "asana_projects", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "asana_workspace_id", null: false
+    t.string "project_gid", null: false
+    t.string "name", null: false
+    t.bigint "client_id"
+    t.index ["asana_workspace_id"], name: "index_asana_projects_on_asana_workspace_id"
+    t.index ["client_id"], name: "index_asana_projects_on_client_id"
+    t.index ["project_gid"], name: "index_asana_projects_on_project_gid", unique: true
   end
 
   create_table "asana_tasks", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "asana_project_id", null: false
+    t.string "task_gid", null: false
+    t.string "name", null: false
+    t.index ["asana_project_id"], name: "index_asana_tasks_on_asana_project_id"
+    t.index ["task_gid"], name: "index_asana_tasks_on_task_gid", unique: true
   end
 
   create_table "asana_workspaces", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.string "workspace_gid", null: false
+    t.string "name", null: false
+    t.index ["user_id", "workspace_gid"], name: "index_asana_workspaces_on_user_id_and_workspace_gid", unique: true
+    t.index ["user_id"], name: "index_asana_workspaces_on_user_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -103,12 +120,22 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_04_221918) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "asana_oauth_state"
+    t.text "asana_access_token"
+    t.text "asana_refresh_token"
+    t.datetime "asana_token_expires_at"
+    t.string "jti", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "asana_projects", "asana_workspaces"
+  add_foreign_key "asana_projects", "clients"
+  add_foreign_key "asana_tasks", "asana_projects"
+  add_foreign_key "asana_workspaces", "users"
   add_foreign_key "clients", "users"
   add_foreign_key "time_entries", "clients"
   add_foreign_key "time_entries", "users"

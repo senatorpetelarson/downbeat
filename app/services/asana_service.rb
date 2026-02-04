@@ -15,8 +15,8 @@ class AsanaService
       comment_text += "\n#{time_entry.notes}" if time_entry.notes.present?
       
       # Post to Asana
-      story = client.stories.create_story_for_task(
-        task_gid: task_gid,
+      story = client.stories.create_on_task(
+        task: task_gid,
         text: comment_text
       )
       
@@ -69,7 +69,7 @@ class AsanaService
       end
 
       Asana::Client.new do |c|
-        c.authentication :oauth2, user.asana_access_token
+        c.authentication :oauth2, bearer_token: user.asana_access_token
       end
     end
 

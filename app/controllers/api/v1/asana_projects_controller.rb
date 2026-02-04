@@ -17,6 +17,18 @@ module Api
         render json: @projects.map { |proj| project_json(proj) }
       end
 
+      def update
+        @project = current_user.asana_workspaces.joins(:asana_projects)
+                              .find_by(asana_projects: { id: params[:id] })
+                              .asana_projects.find(params[:id])
+        
+        if @project.update(project_params)
+          render json: project_json(@project)
+        else
+          render json: { errors: @project.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+
       def map_to_client
         @project = AsanaProject.joins(:asana_workspace)
                               .where(asana_workspaces: { user_id: current_user.id })
@@ -33,6 +45,10 @@ module Api
 
       private
 
+      def project_params
+        params.require(:asana_project).permit(:client_id)
+      end
+
       def project_json(project)
         {
           id: project.id,
@@ -41,8 +57,7 @@ module Api
           workspace_id: project.asana_workspace_id,
           client: project.client ? {
             id: project.client.id,
-            name: project.client.name,
-            color: project.client.color
+            name: project.client.name
           } : nil,
           created_at: project.created_at
         }
