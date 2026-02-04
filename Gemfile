@@ -42,6 +42,9 @@ gem 'devise-jwt'
 # Asana API
 gem 'asana'
 
+# HTTP client for Asana OAuth token refresh
+gem 'httparty'
+
 # Background jobs
 gem 'sidekiq'
 

@@ -23,6 +23,7 @@ class TimeEntry < ApplicationRecord
   end
 
   def duration_in_hours
+    return 0 unless duration_seconds
     duration_seconds / 3600.0
   end
 

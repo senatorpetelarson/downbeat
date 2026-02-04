@@ -1,0 +1,29 @@
+<!-- downbeat-icon.svg -->
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer record -->
+  <circle cx="256" cy="256" r="240" fill="#1a1a1a"/>
+  
+  <!-- Record grooves (added one more) -->
+  <circle cx="256" cy="256" r="230" fill="none" stroke="#333" stroke-width="2"/>
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#333" stroke-width="2"/>
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#333" stroke-width="2"/>
+  <circle cx="256" cy="256" r="170" fill="none" stroke="#333" stroke-width="2"/>
+  
+  <!-- White space/gap around clock -->
+  <circle cx="256" cy="256" r="160" fill="#fff"/>
+  
+  <!-- Clock hands (showing ~2:50) -->
+  <!-- Hour hand (pointing slightly before 3) -->
+  <line x1="256" y1="256" x2="320" y2="285" stroke="#1a1a1a" stroke-width="16" stroke-linecap="round"/>
+  
+  <!-- Minute hand (pointing slightly left of 12) -->
+  <line x1="256" y1="256" x2="230" y2="165" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="14" fill="#1a1a1a"/>
+  <circle cx="256" cy="256" r="10" fill="#fff"/>
+  
+  <!-- Center label hole (vinyl record) -->
+  <circle cx="256" cy="256" r="30" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <circle cx="256" cy="256" r="25" fill="#1a1a1a"/>
+</svg>

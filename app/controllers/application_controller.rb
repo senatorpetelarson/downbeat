@@ -1,11 +1,10 @@
 class ApplicationController < ActionController::API
-  before_action :authenticate_user!
-  
   respond_to :json
-  
+  before_action :authenticate_user!
+
   private
-  
+
   def current_user
-    @current_user ||= super || User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    @current_user ||= warden.user
   end
 end

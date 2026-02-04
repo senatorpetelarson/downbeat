@@ -47,4 +47,8 @@ Rails.application.routes.draw do
   
   # Asana OAuth callback
   get 'auth/asana/callback', to: 'asana_auth#callback'
+
+  # Sidekiq web UI (optional, for monitoring jobs)
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq' # Visit http://localhost:3001/sidekiq
 end
