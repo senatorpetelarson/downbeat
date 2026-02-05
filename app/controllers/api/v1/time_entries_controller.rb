@@ -94,11 +94,11 @@ module Api
       def time_entry_json(entry)
         {
           id: entry.id,
-          client: {
+          client: entry.client ? {
             id: entry.client.id,
             name: entry.client.name,
             color: entry.client.color
-          },
+          } : nil,
           asana_project: entry.asana_project ? {
             id: entry.asana_project.id,
             name: entry.asana_project.name
